@@ -38,7 +38,7 @@ function wrap(
   }
   if (lines.length < maxLines && line) lines.push(line);
   if (lines.length === maxLines) {
-    let last = lines[maxLines - 1];
+    let last = lines[maxLines - 1] ?? "";
     const joined = lines.join(" ");
     if (joined.length < text.length) {
       while (last.length > 1 && ctx.measureText(`${last}…`).width > maxWidth) {
