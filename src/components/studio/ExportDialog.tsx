@@ -12,6 +12,12 @@ import { Label } from "@/components/ui/label";
 import { toast } from "sonner";
 import { download } from "@/lib/render-og";
 import { PRESETS, type OGState } from "@/lib/og-types";
+import {
+  FRAMEWORKS,
+  PLACEMENT,
+  buildSnippet,
+  type FrameworkId,
+} from "@/lib/meta-snippets";
 
 const FORMATS = [
   { id: "png", label: "PNG", hint: "Best quality" },
@@ -27,21 +33,17 @@ export function ExportDialog({
   state: OGState;
 }) {
   const [format, setFormat] = useState<"png" | "jpeg" | "webp">("png");
+  const [framework, setFramework] = useState<FrameworkId>("html");
   const { w, h } = PRESETS[state.preset];
 
-  const snippet = `<meta property="og:image" content="https://your-site.com/og-image.${
-    format === "jpeg" ? "jpg" : format
-  }" />
-<meta property="og:image:width" content="${w}" />
-<meta property="og:image:height" content="${h}" />
-<meta name="twitter:card" content="summary_large_image" />`;
+  const snippet = buildSnippet(framework, state, format);
 
   return (
     <Dialog>
       <DialogTrigger asChild>
         <Button size="lg">Export image</Button>
       </DialogTrigger>
-      <DialogContent>
+      <DialogContent className="max-w-2xl">
         <DialogHeader>
           <DialogTitle>Export your OG image</DialogTitle>
           <DialogDescription>
@@ -70,7 +72,29 @@ export function ExportDialog({
               ))}
             </div>
           </div>
-          <pre className="max-h-40 overflow-auto rounded-lg border border-border bg-secondary/50 p-3 text-xs text-muted-foreground">
+          <div>
+            <Label className="text-xs uppercase tracking-wide text-muted-foreground">
+              Framework
+            </Label>
+            <div className="mt-2 flex flex-wrap gap-2">
+              {FRAMEWORKS.map((f) => (
+                <button
+                  key={f.id}
+                  onClick={() => setFramework(f.id)}
+                  title={f.hint}
+                  className={`rounded-full border px-3 py-1.5 text-xs font-medium transition-colors ${
+                    framework === f.id
+                      ? "border-primary bg-primary/10 text-foreground"
+                      : "border-border text-muted-foreground hover:border-muted-foreground"
+                  }`}
+                >
+                  {f.label}
+                </button>
+              ))}
+            </div>
+            <p className="mt-2 text-xs text-muted-foreground">{PLACEMENT[framework]}</p>
+          </div>
+          <pre className="max-h-60 overflow-auto rounded-lg border border-border bg-secondary/50 p-3 text-xs text-muted-foreground">
             {snippet}
           </pre>
           <div className="flex flex-wrap gap-2">
