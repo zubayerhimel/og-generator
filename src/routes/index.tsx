@@ -9,6 +9,7 @@ import { toast } from "sonner";
 import { ControlPanel } from "@/components/studio/ControlPanel";
 import { ExportDialog } from "@/components/studio/ExportDialog";
 import { Preview } from "@/components/studio/Preview";
+import { PreviewTester } from "@/components/studio/PreviewTester";
 import { defaultState, type OGState } from "@/lib/og-types";
 import { isLocalUrl, parseMeta, scrapeUrl, type ScrapedMeta } from "@/lib/scrape.functions";
 
@@ -143,6 +144,8 @@ function Index() {
           <ControlPanel state={state} update={update} />
         </aside>
       </div>
+
+      <PreviewTester />
     </main>
   );
 }
