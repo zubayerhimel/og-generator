@@ -13,8 +13,8 @@ const ICONS: Record<CheckStatus, typeof CheckCircle2> = {
 };
 
 const TONE: Record<CheckStatus, string> = {
-  pass: "text-[hsl(var(--accent))]",
-  warn: "text-yellow-400",
+  pass: "text-primary",
+  warn: "text-amber-400",
   fail: "text-destructive",
 };
 
